@@ -41,7 +41,7 @@ if(s==null){
 
 <tr>
 <th colspan="2">
-<input type="submit" value="modify"/>
+<input type="submit" value="Update"/>
 </th>
 </tr>
 

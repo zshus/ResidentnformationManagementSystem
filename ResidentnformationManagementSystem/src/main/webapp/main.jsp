@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>main.jsp</title>
+<title>ResidentInformationManagementSystem</title>
 
 <style type="text/css">
 html {

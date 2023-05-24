@@ -8,7 +8,7 @@ public class GetAllCmd implements ICmd {
 
 	@Override
 	public void action(HttpServletRequest request) {
-		System.out.println("list: "+ResidentDAO.getAll());
+		//System.out.println("list: "+ResidentDAO.getAll());
 		request.setAttribute("list", ResidentDAO.getAll());
 		//contentPage="pages/list.jsp";		
 		request.setAttribute("contentPage", "pages/list.jsp");
