@@ -25,7 +25,7 @@ public class DoInsertCmd implements ICmd {
 		s.setS_class(s_class);
 		ResidentDAO.insert(s);
 		
-		System.out.println("list: "+ ResidentDAO.getAll());
+		//System.out.println("list: "+ ResidentDAO.getAll());
 		
 		request.setAttribute("list",ResidentDAO.getAll());
 		request.setAttribute("isRedirect", true);

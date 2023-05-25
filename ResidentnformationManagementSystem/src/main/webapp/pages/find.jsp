@@ -19,7 +19,7 @@ String cmd=(String)request.getAttribute("cmd");
 <option value="s_id">ID</option>
 <%if(cmd.contains("getAll")){ %>
 <option value="s_name">Name</option>
-<option value="s_class">Class</option>
+<option value="s_grade">Address</option>
 <%} %>
 </select>
 </td>
@@ -42,4 +42,5 @@ String cmd=(String)request.getAttribute("cmd");
 
 </form>
 </div>
+
 

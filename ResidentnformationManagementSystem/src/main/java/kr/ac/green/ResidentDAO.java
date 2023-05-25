@@ -59,12 +59,13 @@ public class ResidentDAO {
 	}
 	
 	
-	public static Vector<Resident> getStudentByClass(String s_class){
+	public static Vector<Resident> getStudentByAddress(String s_grade){
 		Vector<Resident> list=getAll();
 		
 		Vector<Resident> result=new Vector<Resident>();
 		for(Resident s:list) {
-			if(s.getS_class().equals(s_class)) {
+			System.out.println("address: "+s.getS_grade());
+			if(s.getS_grade()==Integer.parseInt(s_grade)) {
 				result.add(s);
 			}
 		}

@@ -16,6 +16,8 @@ public class FindCmd implements ICmd {
 		String category=request.getParameter("category");
 		String inputVal=request.getParameter("inputVal");
 		
+		System.out.println(inputVal);
+		
 		Vector<Resident> list=null;
 		if(forWhat.contains("getAll")){
 			if(category.equals("s_id")){
@@ -29,7 +31,7 @@ public class FindCmd implements ICmd {
 			}else if(category.equals("s_name")){
 				list=ResidentDAO.getStudentByName(inputVal);
 			}else {
-				list=ResidentDAO.getStudentByClass(inputVal);
+				list=ResidentDAO.getStudentByAddress(inputVal);
 			}
 			
 			//contentPage="pages/list.jsp";
