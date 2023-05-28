@@ -20,7 +20,7 @@ if(s==null){
 </tr>
 
 <tr>
-<th id="inputHeader">NAME</th>
+<th id="inputHeader">Name</th>
 <th><input type="text" name="s_name" value="<%=s.getS_name() %>" readonly="readonly"/></th>
 </tr>
 
@@ -30,12 +30,12 @@ if(s==null){
 </tr>
 
 <tr>
-<th>Grade</th>
+<th>Address</th>
 <th><input type="text" name="s_grade" value="<%=s.getS_grade() %>"/></th>
 </tr>
 
 <tr>
-<th>Class</th>
+<th>Members</th>
 <th><input type="text" name="s_class" value="<%=s.getS_class() %>" /></th>
 </tr>
 

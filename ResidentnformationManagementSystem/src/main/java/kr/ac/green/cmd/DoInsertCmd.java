@@ -1,11 +1,14 @@
 package kr.ac.green.cmd;
 
+import java.sql.Connection;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.bean.Counter;
 import org.bean.Resident;
 
-import kr.ac.green.ResidentDAO;
+import kr.ac.green.dao.ResidentDAO;
+import kr.ac.green.dao.SqlResidentDao;
 
 public class DoInsertCmd implements ICmd {
 
@@ -23,7 +26,11 @@ public class DoInsertCmd implements ICmd {
 		s.setS_grade(s_grade);
 		s.setS_tel(s_tel);
 		s.setS_class(s_class);
-		ResidentDAO.insert(s);
+		//ResidentDAO.insert(s);
+		SqlResidentDao dao=SqlResidentDao.getInstance();
+		Connection con=dao.connect();
+		dao.insertResident(con, s);
+		dao.disconnect(con);
 		
 		//System.out.println("list: "+ ResidentDAO.getAll());
 		

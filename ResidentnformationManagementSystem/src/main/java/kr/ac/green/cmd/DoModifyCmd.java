@@ -1,10 +1,12 @@
 package kr.ac.green.cmd;
 
+import java.sql.Connection;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.bean.Resident;
 
-import kr.ac.green.ResidentDAO;
+import kr.ac.green.dao.SqlResidentDao;
 
 public class DoModifyCmd implements ICmd {
 
@@ -23,7 +25,11 @@ public class DoModifyCmd implements ICmd {
 		s.setS_grade(s_grade);
 		s.setS_tel(s_tel);
 		
-		ResidentDAO.update(s);
+		//ResidentDAO.update(s);
+		SqlResidentDao dao=SqlResidentDao.getInstance();
+		Connection con=dao.connect();
+		dao.updateResident(con, s);
+		dao.disconnect(con);
 		
 		//isRedirect=true;
 		request.setAttribute("isRedirect", true);

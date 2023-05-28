@@ -1,12 +1,14 @@
 package kr.ac.green.cmd;
 
+import java.sql.Connection;
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.bean.Resident;
 
-import kr.ac.green.ResidentDAO;
+import kr.ac.green.dao.ResidentDAO;
+import kr.ac.green.dao.SqlResidentDao;
 
 public class FindCmd implements ICmd {
 
@@ -16,29 +18,41 @@ public class FindCmd implements ICmd {
 		String category=request.getParameter("category");
 		String inputVal=request.getParameter("inputVal");
 		
-		System.out.println(inputVal);
+		//System.out.println(inputVal);
 		
 		Vector<Resident> list=null;
+		SqlResidentDao dao=SqlResidentDao.getInstance();
+		Connection con=dao.connect();
+		
 		if(forWhat.contains("getAll")){
+			
 			if(category.equals("s_id")){
 				list=new Vector<Resident>();
-				Resident s=ResidentDAO.getStudentById(Integer.parseInt(inputVal));
+				//Resident s=ResidentDAO.getStudentById(Integer.parseInt(inputVal));
+				
+				Resident s=dao.getResidentById(con, Integer.parseInt(inputVal));
 				
 				if(s!=null){
 						list.add(s);
 					}
 				
 			}else if(category.equals("s_name")){
-				list=ResidentDAO.getStudentByName(inputVal);
+				//list=ResidentDAO.getStudentByName(inputVal);
+				list=dao.getResidentByName(con, inputVal);
+				
 			}else {
-				list=ResidentDAO.getStudentByAddress(inputVal);
+				list=new Vector<Resident>();
+				//list=ResidentDAO.getStudentByAddress(inputVal);
+				Resident s=dao.getResidentByAddress(con, Integer.parseInt(inputVal));				
+				list.add(s);
 			}
 			
 			//contentPage="pages/list.jsp";
 			request.setAttribute("contentPage", "pages/list.jsp");
 			request.setAttribute("list", list);
 		}else{
-			Resident s =ResidentDAO.getStudentById(Integer.parseInt(inputVal));
+			//Resident s =ResidentDAO.getStudentById(Integer.parseInt(inputVal));
+			Resident s=dao.getResidentById(con, Integer.parseInt(inputVal));
 			if(s!=null){
 				if(forWhat.contains("modify")){
 					//contentPage="pages/modify.jsp";
@@ -54,6 +68,7 @@ public class FindCmd implements ICmd {
 				request.setAttribute("contentPage", "pages/nodata.jsp");
 			}
 		}
+		dao.disconnect(con);
 		
 
 	}

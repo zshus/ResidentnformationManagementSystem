@@ -4,8 +4,8 @@ public class Resident {
 	private int s_id;
 	private String s_name;
 	private String s_tel;
-	private int s_grade;
-	private String s_class;
+	private int s_grade; //주소
+	private String s_class; //세대원
 	
 	public Resident() {}
 	

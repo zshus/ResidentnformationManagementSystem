@@ -1,4 +1,4 @@
-<%@page import="kr.ac.green.ResidentDAO"%>
+<%@page import="kr.ac.green.dao.ResidentDAO"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
     <%

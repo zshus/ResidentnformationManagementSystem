@@ -1,4 +1,4 @@
-package kr.ac.green;
+package kr.ac.green.dao;
 
 import java.util.Vector;
 
