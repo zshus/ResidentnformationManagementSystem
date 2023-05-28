@@ -4,7 +4,10 @@
     pageEncoding="EUC-KR"%>
 <%
 Vector<Resident> list=(Vector<Resident>)request.getAttribute("list");
-//System.out.println(list);
+session.setAttribute("size", list.size()-1);
+int idx=(int)session.getAttribute("page");
+int startIdx=idx*4-4;
+int endIdx=idx*4;
 %>
 
 <jsp:include page="find.jsp">
@@ -39,8 +42,8 @@ for(int i=1; i<=list.size()/4+1;i++){
 
 <tbody>
 <%
-if(list.size()!=0){
-	for(int i=0;i<4 && i<list.size();i++){
+if(list.size()!=0){	
+	for(int i=startIdx;i<endIdx && i<list.size();i++){
 		Resident s=list.get(i);
 		%>
 		<tr>
@@ -65,10 +68,12 @@ if(list.size()!=0){
 
 </table>
 <br>
+<form action="getAll.resident" method="post">
 <div class="button">
-<input type="button" value="before"/>
-<input type="button" value="next"/>
+<input type="submit" value="before" name="btnwhat" />
+<input type="submit" value="next" name="btnwhat"  />
 </div>
+</form>
 <style>
 .button {
 margin-left: 5em;

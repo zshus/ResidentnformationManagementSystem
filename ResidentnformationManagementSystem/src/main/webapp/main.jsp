@@ -1,3 +1,5 @@
+<%@page import="org.bean.Resident"%>
+<%@page import="java.util.Vector"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 <!DOCTYPE html>
@@ -149,6 +151,25 @@ select, input[type="submit"]{
 
 <%
 String contentPage=(String) request.getAttribute("contentPage");
+int p=(int)session.getAttribute("page");
+String what=(String) request.getParameter("btnwhat");
+if(what!=null){
+	if(what.equals("next")){
+		Vector<Resident> list=(Vector<Resident>)request.getAttribute("list");
+		if(p<list.size()/4+1){
+			p++;
+		}
+		
+	}else{
+		if(p>1){
+			p--;
+		}		
+	}
+	session.setAttribute("page",p );
+}else{
+	session.setAttribute("page",1 );
+}
+
 %>
 
 <body>

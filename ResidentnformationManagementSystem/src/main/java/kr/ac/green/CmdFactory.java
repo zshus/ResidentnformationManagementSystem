@@ -14,6 +14,7 @@ import kr.ac.green.cmd.InputCmd;
 import kr.ac.green.cmd.ModifyDeleteCmd;
 import kr.ac.green.cmd.NodateCmd;
 
+
 public class CmdFactory {
 	
 	private static HashMap<String, ICmd> cmds=new HashMap<String, ICmd>();
@@ -28,6 +29,7 @@ public class CmdFactory {
 		cmds.put("/doModify.resident", new DoModifyCmd());
 		cmds.put("/doDelete.resident", new DoDeleteCmd());
 		cmds.put("/nodata.resident", new NodateCmd());
+		
 	}
 	
 	public static void action(HttpServletRequest request, String cmd) {

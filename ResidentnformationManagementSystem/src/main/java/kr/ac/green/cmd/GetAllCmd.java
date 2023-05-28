@@ -11,14 +11,14 @@ public class GetAllCmd implements ICmd {
 
 	@Override
 	public void action(HttpServletRequest request) {
-		//System.out.println("list: "+ResidentDAO.getAll());
+		//System.out.println("list: "+ResidentDAO.getAll());		
 		SqlResidentDao dao=SqlResidentDao.getInstance();
 		Connection con=dao.connect();
 		request.setAttribute("list", dao.getAll(con));
 		dao.disconnect(con);
-		//contentPage="pages/list.jsp";		
+		//contentPage="pages/list.jsp";			
 		request.setAttribute("contentPage", "pages/list.jsp");
-
+		
 	}
 
 }

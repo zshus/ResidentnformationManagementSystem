@@ -35,14 +35,15 @@ public class ResidentServlet extends HttpServlet {
 	private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String cmd=request.getRequestURI().substring(request.getContextPath().length());
-		
-		//System.out.println(cmd);//  /getAll.student
+		if(cmd.contains("/pages")) {
+			cmd=cmd.replace("/pages","");
+		}
+		//System.out.println("cmd"+cmd);
 		
 		CmdFactory.action(request, cmd);
 		
 		String contentPage=(String)request.getAttribute("contentPage");
-		
-		
+				
 		if(contentPage==null)contentPage="pages/list.jsp";
 		//System.out.println(contentPage);
 		//System.out.println( request.getAttribute("isRedirect"));
@@ -54,8 +55,9 @@ public class ResidentServlet extends HttpServlet {
 //			rd.forward(request, response);
 			response.sendRedirect("index.jsp");
 		}else {
-//			response.sendRedirect("main.jsp");
+//			response.sendRedirect("main.jsp");			
 			request.getRequestDispatcher("main.jsp").forward(request, response);
+			
 		}
 		
 		
