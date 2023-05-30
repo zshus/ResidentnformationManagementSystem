@@ -1,10 +1,14 @@
 package kr.ac.green.dao;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Vector;
 
 import org.bean.Resident;
@@ -56,7 +60,7 @@ public class SqlResidentDao {
 					+ "VALUES(?, ?, ?,?,? )";
 			pStmt=con.prepareStatement(sql);
 			pStmt.setInt(1, ren.getS_id());
-			pStmt.setString(2, ren.getS_name());
+			pStmt.setString(2, toEn(ren.getS_name()));
 			pStmt.setString(3, ren.getS_tel());
 			pStmt.setInt(4, ren.getS_grade());//주소
 			pStmt.setString(5, ren.getS_class());//멘버원
@@ -65,6 +69,8 @@ public class SqlResidentDao {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+		}finally {
+			close(pStmt);
 		}
 		
 		return result;
@@ -82,6 +88,8 @@ public class SqlResidentDao {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+		}finally {
+			close(pStmt);
 		}
 		
 		return result;
@@ -94,13 +102,15 @@ public class SqlResidentDao {
 			String sql="UPDATE residentInfo SET tel=?,address=?, members=? WHERE id=?";
 			pStmt=con.prepareStatement(sql);
 			pStmt.setString(1, ren.getS_tel());
-			pStmt.setInt(2, ren.getS_grade());
-			pStmt.setString(3, ren.getS_class());
+			pStmt.setInt(2, ren.getS_grade());//address
+			pStmt.setString(3, ren.getS_class());//members
 			pStmt.setInt(4, ren.getS_id());
 			result=pStmt.executeUpdate();
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+		}finally {
+			close(pStmt);
 		}
 		return result;
 		
@@ -121,8 +131,63 @@ public class SqlResidentDao {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pStmt);
 		}
 		return vec;
+		
+	}
+	
+	public Vector<Resident> getList(Connection con, int pageNum, int perPage){
+		Vector<Resident> list=new Vector<>();
+		PreparedStatement pStmt=null;
+		ResultSet rs=null;
+		
+		String sql="SELECT * FROM residentInfo LIMIT ?,?";
+		
+		try {
+			pStmt=con.prepareStatement(sql);
+			pStmt.setInt(1, (pageNum-1)*perPage);
+			pStmt.setInt(2, perPage);
+			rs=pStmt.executeQuery();
+			
+			while(rs.next()) {
+				list.add(rsMapping(rs));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pStmt);
+		}
+		
+		return list;
+	}
+	
+	
+	public int getToyalCount(Connection con) {
+		int totalCount=0;
+		PreparedStatement pStmt=null;
+		ResultSet rs=null;
+		
+		String sql="SELECT COUNT(*) FROM residentInfo";
+		
+		try {
+			pStmt=con.prepareStatement(sql);
+			rs=pStmt.executeQuery();
+			if(rs.next()) {
+				totalCount=rs.getInt(1);
+			}
+		} catch (SQLException e) {			
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pStmt);
+		}
+		
+		return totalCount;
 		
 	}
 	
@@ -133,7 +198,7 @@ public class SqlResidentDao {
 		try {
 			String sql="SELECT * FROM residentInfo WHERE name=?";
 			pStmt=con.prepareStatement(sql);
-			pStmt.setString(1, name);
+			pStmt.setString(1, toEn(name));
 			rs=pStmt.executeQuery();
 			while(rs.next()){
 				Resident r=rsMapping(rs);
@@ -141,6 +206,9 @@ public class SqlResidentDao {
 			}			
 		} catch (SQLException e) {			
 			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pStmt);
 		}
 		
 		return vec;
@@ -165,6 +233,9 @@ public class SqlResidentDao {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pStmt);
 		}
 		return r;
 	}
@@ -186,9 +257,36 @@ public class SqlResidentDao {
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pStmt);
 		}
 		return r;
 		
+	}
+	
+	
+	private String toKr(String en) {
+		String kr=null;
+		try {
+			kr=new String(en.getBytes("8859_1"),"euc_kr");
+		} catch (UnsupportedEncodingException e) {
+
+			e.printStackTrace();
+		}
+		
+		return kr;
+	}
+	
+	private String toEn(String kr) {
+		String en=null;
+		
+		try {
+			en=new String(kr.getBytes("euc_kr"),"8859_1");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return en;
 	}
 	
 	
@@ -197,7 +295,7 @@ public class SqlResidentDao {
 		Resident r=null;
 		try {
 			int id=rs.getInt("id");
-			String name=rs.getString("name");
+			String name=toKr(rs.getString("name"));
 			String tel=rs.getString("tel");
 			int address=rs.getInt("address");
 			String members=rs.getString("members");
@@ -212,6 +310,24 @@ public class SqlResidentDao {
 		return r;
 		
 	}
+	
+	private void close(ResultSet c) {
+			try {
+				c.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		
+	}
+	
+	private void close(Statement c) {
+		try {
+			c.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	
+}
 	
 	
 

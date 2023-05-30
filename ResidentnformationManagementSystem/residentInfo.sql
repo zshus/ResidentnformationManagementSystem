@@ -28,12 +28,16 @@ VALUES(6, 'Anna', '01012341234',301,'5' ),
 
 DELETE FROM residentInfo WHERE id=?;
 
-UPDATE residentInfo SET tel='?',address='?', members='?' WHERE id=?;
+UPDATE residentInfo SET tel=?,address=?, members=? WHERE id=?;
 
 SELECT * FROM residentInfo WHERE id=?;
 
 SELECT * FROM residentInfo WHERE address=?;
 
-SELECT * FROM residentInfo WHERE name='?';
+SELECT * FROM residentInfo WHERE name=?;
 
 SELECT * FROM residentInfo;
+
+
+
+

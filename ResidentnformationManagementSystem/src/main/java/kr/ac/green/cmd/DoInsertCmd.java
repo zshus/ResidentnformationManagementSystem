@@ -1,10 +1,10 @@
 package kr.ac.green.cmd;
 
 import java.sql.Connection;
+import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.bean.Counter;
 import org.bean.Resident;
 
 import kr.ac.green.dao.ResidentDAO;
@@ -14,6 +14,8 @@ public class DoInsertCmd implements ICmd {
 
 	@Override
 	public void action(HttpServletRequest request) {
+		SqlResidentDao dao=SqlResidentDao.getInstance();
+		Connection con=dao.connect();
 		
 		String s_name=request.getParameter("s_name");
 		int s_grade=Integer.parseInt(request.getParameter("s_grade"));
@@ -21,22 +23,21 @@ public class DoInsertCmd implements ICmd {
 		String s_class=request.getParameter("s_class");
 		Resident s=new Resident();
 		
-		s.setS_id(Counter.getCount());
+		Vector<Resident> residentList=dao.getAll(con);
+		Resident resident=residentList.get(residentList.size()-1);
+		int id=resident.getS_id();
+		id++;
+		s.setS_id(id);//Counter.getCount()
 		s.setS_name(s_name);
 		s.setS_grade(s_grade);
 		s.setS_tel(s_tel);
 		s.setS_class(s_class);
-		//ResidentDAO.insert(s);
-		SqlResidentDao dao=SqlResidentDao.getInstance();
-		Connection con=dao.connect();
+	
 		dao.insertResident(con, s);
-		dao.disconnect(con);
-		
-		//System.out.println("list: "+ ResidentDAO.getAll());
+		dao.disconnect(con);	
 		
 		request.setAttribute("list",ResidentDAO.getAll());
-		request.setAttribute("isRedirect", true);
-		//isRedirect=true;
+		request.setAttribute("isRedirect", true);	
 
 	}
 

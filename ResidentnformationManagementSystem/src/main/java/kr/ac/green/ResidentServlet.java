@@ -10,9 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class StudentServlet
- */
+
 public class ResidentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -37,25 +35,19 @@ public class ResidentServlet extends HttpServlet {
 		String cmd=request.getRequestURI().substring(request.getContextPath().length());
 		if(cmd.contains("/pages")) {
 			cmd=cmd.replace("/pages","");
-		}
-		//System.out.println("cmd"+cmd);
-		
+		}		
 		CmdFactory.action(request, cmd);
 		
 		String contentPage=(String)request.getAttribute("contentPage");
 				
-		if(contentPage==null)contentPage="pages/list.jsp";
-		//System.out.println(contentPage);
-		//System.out.println( request.getAttribute("isRedirect"));
+		if(contentPage==null)contentPage="pages/list.jsp";		
 		
 		request.setAttribute("cmd", cmd);
-//		request.getRequestDispatcher("main.jsp").forward(request, response);
 		if(request.getAttribute("isRedirect")!=null) {
-//			RequestDispatcher rd=request.getRequestDispatcher("main.jsp");
-//			rd.forward(request, response);
+			
 			response.sendRedirect("index.jsp");
 		}else {
-//			response.sendRedirect("main.jsp");			
+			
 			request.getRequestDispatcher("main.jsp").forward(request, response);
 			
 		}

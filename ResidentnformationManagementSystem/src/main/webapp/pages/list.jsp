@@ -4,17 +4,13 @@
     pageEncoding="EUC-KR"%>
 <%
 Vector<Resident> list=(Vector<Resident>)request.getAttribute("list");
-session.setAttribute("size", list.size()-1);
-int idx=(int)session.getAttribute("page");
-int startIdx=idx*4-4;
-int endIdx=idx*4;
 %>
 
 <jsp:include page="find.jsp">
 <jsp:param value="getAll" name="cmd"/>
 </jsp:include>
 
-<table>
+<table id="table">
 <caption> </caption>
 <thead>
 <tr>
@@ -29,10 +25,19 @@ int endIdx=idx*4;
 <tr>
 <th colspan="5">
 <%
-for(int i=1; i<=list.size()/4+1;i++){
+int pageCount=(Integer)request.getAttribute("pageCount");
+int pageNum=(int)request.getAttribute("pageNum");
+for(int i=1; i<=pageCount;i++){
+	if(pageNum==i){
+		%>
+		[<%=i%>]
+		<%
+		
+	}else{
 	%>
 	<%=i%>
 	<%
+	}
 }
 %>
 </th>
@@ -43,7 +48,7 @@ for(int i=1; i<=list.size()/4+1;i++){
 <tbody>
 <%
 if(list.size()!=0){	
-	for(int i=startIdx;i<endIdx && i<list.size();i++){
+	for(int i=0; i<list.size();i++){
 		Resident s=list.get(i);
 		%>
 		<tr>
@@ -68,7 +73,7 @@ if(list.size()!=0){
 
 </table>
 <br>
-<form action="getAll.resident" method="post">
+<form action="getAll.resident?pageNum=<%=pageNum%>" method="post">
 <div class="button">
 <input type="submit" value="before" name="btnwhat" />
 <input type="submit" value="next" name="btnwhat"  />
@@ -81,5 +86,11 @@ width: 485px;
 display: flex;
 flex-direction:row;
 justify-content: space-between;
+}
+
+#table {
+	width: 80%;
+	height:40%;
+	
 }
 </style>

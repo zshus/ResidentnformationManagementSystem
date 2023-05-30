@@ -3,8 +3,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
     <%
-    ResidentDAO.init(application);
-    session.setAttribute("page",1 );
-   
+    ResidentDAO.init(application); 
     %>
 <jsp:forward page="getAll.resident"/>
